@@ -5,6 +5,8 @@ import com.parquimetro.api.repository.VeiculoRepository;
 import com.parquimetro.api.service.VeiculoService;
 import com.parquimetro.api.service.dto.AdicionarVeiculoDto;
 import com.parquimetro.api.service.exception.VeiculoJaExisteException;
+import com.parquimetro.api.service.exception.VeiculoJaRemovidoException;
+import com.parquimetro.api.service.exception.VeiculoNaoEncontradoException;
 import com.parquimetro.api.util.TicketGenerator;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +44,14 @@ public class VeiculoServiceImpl implements VeiculoService {
     }
 
     @Override
-    public Veiculo gerarFatura(String placa) throws VeiculoJaExisteException {
+    public Veiculo gerarFatura(String placa) throws VeiculoNaoEncontradoException, VeiculoJaRemovidoException {
         var veiculo = veiculoRepository.findByPlaca(placa);
         if (veiculo == null) {
-            throw new VeiculoJaExisteException();
+            throw new VeiculoNaoEncontradoException();
+        }
+
+        if (veiculo.getDataRemocao() != null) {
+            throw new VeiculoJaRemovidoException();
         }
 
         var dataDeEntrada = veiculo.getCreatedAt();
@@ -64,5 +70,20 @@ public class VeiculoServiceImpl implements VeiculoService {
 
         return veiculoRepository.save(veiculo);
 
+    }
+
+    @Override
+    public void removerVeiculo(String placa) throws VeiculoNaoEncontradoException, VeiculoJaRemovidoException {
+        var veiculo = veiculoRepository.findByPlaca(placa);
+        if (veiculo == null) {
+            throw new VeiculoNaoEncontradoException();
+        }
+
+        if (veiculo.getDataRemocao() != null) {
+            throw new VeiculoJaRemovidoException();
+        }
+
+        veiculo.setDataRemocao(LocalDateTime.now());
+        veiculoRepository.save(veiculo);
     }
 }
