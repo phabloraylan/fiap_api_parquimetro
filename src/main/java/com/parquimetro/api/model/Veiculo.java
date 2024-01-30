@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,8 +25,12 @@ public class Veiculo {
     @Column(length = 255, nullable = false, unique = true)
     private String ticket;
 
-    @Column(name = "duracao_min", nullable = false)
-    private Integer duracaoMin;
+    @Column(name = "valor_pago", precision = 10, scale = 2)
+    private BigDecimal valorPago;
+
+    @Column(name = "data_remocao")
+    private LocalDateTime dataRemocao;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
