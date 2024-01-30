@@ -31,4 +31,9 @@ public class VeiculoServiceImpl implements VeiculoService {
                 veiculo
         );
     }
+
+    @Override
+    public Veiculo buscarPorPlaca(String placa) {
+        return veiculoRepository.findByPlaca(placa);
+    }
 }

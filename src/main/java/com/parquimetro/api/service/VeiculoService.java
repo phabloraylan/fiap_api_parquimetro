@@ -6,4 +6,6 @@ import com.parquimetro.api.service.exception.VeiculoJaExisteException;
 
 public interface VeiculoService {
     Veiculo adicionar(AdicionarVeiculoDto adicionarVeiculoDto) throws VeiculoJaExisteException;
+
+    Veiculo buscarPorPlaca(String placa);
 }

@@ -7,10 +7,7 @@ import com.parquimetro.api.service.dto.AdicionarVeiculoDto;
 import com.parquimetro.api.service.exception.VeiculoJaExisteException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/veiculos")
@@ -39,5 +36,16 @@ public class VeiculoController {
         }
 
 
+    }
+
+    @GetMapping("/{placa}")
+    public ResponseEntity<Object> buscarPorPlaca(
+            @PathVariable String placa
+    ) {
+        var veiculo = veiculoService.buscarPorPlaca(placa);
+        if (veiculo == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(veiculo);
     }
 }
