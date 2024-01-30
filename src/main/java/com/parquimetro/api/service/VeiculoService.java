@@ -8,4 +8,6 @@ public interface VeiculoService {
     Veiculo adicionar(AdicionarVeiculoDto adicionarVeiculoDto) throws VeiculoJaExisteException;
 
     Veiculo buscarPorPlaca(String placa);
+
+    Veiculo gerarFatura(String placa) throws VeiculoJaExisteException;
 }
